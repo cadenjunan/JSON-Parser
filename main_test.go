@@ -21,3 +21,19 @@ func TestTrimBodyWithOneCurlyBrace(t *testing.T){
 	}
 }
 
+func TestNormalString(t *testing.T) {
+	s := "hello"
+	err := ValidString(s,len(s) )
+	if err != nil {
+		t.Errorf("should not return error for normal string")
+	}
+}
+
+func TestOneCtrlChar(t *testing.T) {
+	s:= "hello\n"
+	err := ValidString(s,len(s) )
+	if err != nil {
+		t.Errorf("should not return error for normal string with a newline")
+	}
+}
+

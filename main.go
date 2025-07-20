@@ -17,6 +17,33 @@ func TrimCurlyBraces(payload string) (string, error){
 	}
 	return s, nil
 }
+func ValidControlChars(r rune) bool {
+	return r == '"' || r == '/' || r == '\\' || r == 'r' || r == 't' || r == 'n' || r =='f'
+}
+func ValidString(value string, size int) error {
+	for i, r := range value {
+		if i > 0 && value[i-1] == '\\' {
+			if !ValidControlChars(r)  {
+				return fmt.Errorf("invalid control char after a reverse solidus")
+			}
+		}
+	}
+	return nil
+}
+func ValidValue(value string) error {
+	size := len(value)
+	// string
+	if value[0] == '"' && value[size-1] == '"' {
+		return ValidString(value, size)
+	} else if value[0] == '{' && value[size-1] == '}' { // json body
+
+	}else if  value[0] == '[' && value[size-1] == ']' {
+
+	}
+	
+	return fmt.Errorf("invalid value: %s", value)
+	// either number or boolean
+}
 func ValidKeyPair(keyPair string) error {
 	keyPairSplit := strings.Split(keyPair, ":")
 	size := len(keyPairSplit)
